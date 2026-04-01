@@ -2,524 +2,924 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<title>Mac Setup Wizard</title>
+<title>Counterpart Health — Laptop Setup</title>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <style>
   :root{
-    --cph-blue:#444AD3;
-    --clover-green:#0F4D43;
-    --warn:#c11;
-    --muted:#666;
+    --cph:#444AD3;
+    --clover:#0F4D43;
     --bg:#f6f8fb;
+    --card:#fff;
+    --border:#e8edf5;
+    --muted:#666;
+    --text:#111;
+    --warn:#c11;
   }
+  *{box-sizing:border-box}
   body{
-    font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-    background:var(--bg);
-    margin:0;
-    padding:20px;
-    color:#111;
+    font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);margin:0;padding:16px;color:var(--text);
+    line-height:1.55;
   }
   .wrap{
-    max-width:980px;
-    margin:18px auto;
-    background:#fff;
-    border-radius:10px;
-    padding:20px;
-    box-shadow:0 8px 24px rgba(12,24,48,0.06);
+    max-width:860px;margin:12px auto;background:var(--card);
+    border-radius:12px;padding:24px;
+    box-shadow:0 4px 20px rgba(12,24,48,0.06);
   }
-  header{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:16px;
-  }
-  .header-left{
-    display:flex;
-    align-items:flex-start;
-    gap:16px;
-    flex:1;
-    min-width:0;
-  }
-  .header-logo{
-    display:block;
-    max-height:64px;
-    width:auto;
-  }
-  .header-copy{
-    min-width:0;
-  }
-  h1{
-    margin:0;
-    font-weight:700;
-    font-size:20px;
-    color:#000;
-  }
-  .small{font-size:.92rem;color:var(--muted)}
-  .progressbar{
-    height:10px;
-    background:#eee;
-    border-radius:999px;
-    margin:14px 0;
-    overflow:hidden;
-  }
-  .progressbar .fill{
-    height:100%;
-    background:var(--cph-blue);
-    width:0%;
-  }
-  .card{
-    border-radius:8px;
-    padding:16px;
-    margin:12px 0;
-    border:1px solid #e8edf5;
-    background:#fff;
-  }
-  .step-title{
-    font-weight:700;
-    color:var(--cph-blue);
-    margin-bottom:8px;
-    font-size:1.15rem;
+
+  /* ── Header ── */
+  header{margin-bottom:4px}
+  .header-logo{display:block;max-height:56px;width:auto;margin-bottom:10px}
+  .sub{font-size:.88rem;color:var(--muted);margin:0 0 2px}
+  .phase-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .phase-heading{
+    font-size:.95rem;font-weight:700;color:var(--text);margin:0;
   }
   .pill{
-    display:inline-block;
-    background:#eef3fb;
-    color:var(--cph-blue);
-    padding:8px 14px;
-    border-radius:999px;
-    font-weight:700;
-    white-space:nowrap;
+    display:inline-block;background:#eef3fb;color:var(--cph);
+    padding:5px 12px;border-radius:999px;font-weight:700;
+    font-size:.82rem;white-space:nowrap;margin-top:4px;
   }
-  .warn{
-    border-left:6px solid var(--warn);
-    background:#fff6f6;
-    padding:10px;
-    margin:10px 0;
-    font-weight:700;
-    color:var(--warn);
+
+  /* ── Progress ── */
+  .progress-wrap{margin:16px 0 18px;display:flex;gap:4px}
+  .progress-seg{
+    flex:1;height:8px;border-radius:99px;background:#e4e8f0;overflow:hidden;
+    position:relative;
   }
-  .info{
-    border-left:6px solid var(--cph-blue);
-    background:#f3f6ff;
-    padding:10px;
-    margin:10px 0;
+  .progress-seg .fill{
+    position:absolute;left:0;top:0;height:100%;
+    background:var(--cph);border-radius:99px;width:0%;
+    transition:width .3s ease;
   }
+  .phase-labels{
+    display:flex;gap:4px;margin:-10px 0 14px;
+  }
+  .phase-label{
+    flex:1;text-align:center;font-size:.7rem;color:var(--muted);
+    font-weight:600;letter-spacing:.02em;
+  }
+  .phase-label.active{color:var(--cph);font-weight:700}
+
+  /* ── Card ── */
+  .card{
+    border-radius:10px;padding:20px;margin:8px 0;
+    border:1px solid var(--border);background:var(--card);
+  }
+  .step-title{
+    font-weight:700;color:var(--cph);margin-bottom:10px;font-size:1.2rem;
+  }
+
+  /* ── Account badges ── */
+  .badge{
+    display:inline-flex;align-items:center;gap:5px;
+    padding:2px 10px;border-radius:4px;font-weight:700;font-size:.85rem;
+    vertical-align:middle;
+  }
+  .badge-cph{background:#eef0ff;color:var(--cph)}
+  .badge-clover{background:#e8f5f0;color:var(--clover)}
+  .badge .dot{width:8px;height:8px;border-radius:2px;display:inline-block}
+  .badge-cph .dot{background:var(--cph)}
+  .badge-clover .dot{background:var(--clover)}
+
+  /* ── Info / Why callouts ── */
+  .info-why{
+    background:#DADEF7;border-radius:8px;padding:12px 16px;margin:12px 0;
+    font-size:.92rem;color:#333;border-left:4px solid var(--cph);
+  }
+  .info-why strong{color:var(--cph)}
+
+  /* ── Two-column account cards ── */
+  .account-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0;
+  }
+  .account-card{
+    border-radius:10px;padding:16px;border:1px solid var(--border);
+  }
+  .account-card.cph-card{border-left:4px solid var(--cph)}
+  .account-card.clover-card{border-left:4px solid var(--clover)}
+  .account-card h3{margin:0 0 4px;font-size:1rem}
+  .account-card .email{font-size:.88rem;color:var(--muted);margin-bottom:10px;font-family:monospace}
+  .account-card ul{margin:0;padding-left:18px;font-size:.92rem;line-height:1.8}
+
+  /* ── Roadmap ── */
+  .roadmap{margin:20px 0;display:flex;flex-direction:column;gap:0}
+  .roadmap-item{
+    display:flex;align-items:flex-start;gap:14px;padding:10px 0;
+    position:relative;
+  }
+  .roadmap-item:not(:last-child)::after{
+    content:'';position:absolute;left:15px;top:36px;bottom:0;
+    width:2px;background:#dde2ed;
+  }
+  .roadmap-dot{
+    width:32px;height:32px;border-radius:50%;
+    background:var(--cph);color:#fff;font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+    font-size:.82rem;flex-shrink:0;position:relative;z-index:1;
+  }
+  .roadmap-text{min-width:0}
+  .roadmap-text .name{font-weight:700;font-size:.95rem;color:var(--text)}
+  .roadmap-text .time{font-size:.82rem;color:var(--muted)}
+
+  /* ── Welcome ── */
+  .welcome-heading{
+    font-size:1.5rem;font-weight:700;color:var(--text);margin:0 0 8px;
+    text-align:center;
+  }
+  .welcome-sub{
+    font-size:.95rem;color:var(--muted);text-align:center;
+    max-width:540px;margin:0 auto 20px;line-height:1.6;
+  }
+
+  /* ── Images ── */
   .img{
-    max-width:100%;
-    height:auto;
-    border:1px solid #e3e8f0;
-    border-radius:6px;
-    margin-top:12px;
-    background:#fafbfd;
+    max-width:100%;height:auto;border:1px solid #e3e8f0;
+    border-radius:6px;margin-top:10px;background:#fafbfd;
   }
   .img-fallback{
-    border:1px dashed #cbd5e1;
-    border-radius:6px;
-    margin-top:12px;
-    padding:28px 18px;
-    background:#f8fafc;
-    color:#475569;
-    text-align:center;
-    font-size:.95rem;
+    border:1px dashed #cbd5e1;border-radius:6px;margin-top:10px;
+    padding:24px 16px;background:#f8fafc;color:#94a3b8;
+    text-align:center;font-size:.9rem;
   }
-  label{display:block;margin:10px 0;font-size:.96rem}
-  input[type="text"], input[type="password"]{
-    width:100%;
-    padding:10px;
-    border-radius:6px;
-    border:1px solid #d8e0ee;
-    font-size:.95rem;
-    box-sizing:border-box;
-  }
-  .controls{
-    display:flex;
-    gap:10px;
-    justify-content:flex-end;
-    margin-top:18px;
-  }
+
+  /* ── Controls ── */
+  .controls{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
   button{
-    padding:8px 14px;
-    border-radius:8px;
-    border:1px solid #d0d7e6;
-    background:#fff;
-    cursor:pointer;
+    padding:10px 18px;border-radius:8px;border:1px solid #d0d7e6;
+    background:#fff;cursor:pointer;font-size:.92rem;font-weight:600;
+    transition:all .15s;
   }
-  button.primary{
-    background:var(--cph-blue);
-    color:#fff;
-    border-color:var(--cph-blue);
-  }
-  button:disabled{opacity:.55;cursor:not-allowed;}
-  .clover{color:var(--clover-green);font-weight:700}
-  .cph{color:var(--cph-blue);font-weight:700}
+  button:hover{background:#f5f7fa}
+  button.primary{background:var(--cph);color:#fff;border-color:var(--cph)}
+  button.primary:hover{background:#3a3fc2}
+  button:disabled{opacity:.45;cursor:not-allowed}
+  label{display:block;margin:8px 0;font-size:.94rem;cursor:pointer}
+  label input[type="checkbox"],
+  label input[type="radio"]{margin-right:8px;cursor:pointer}
+
+  /* ── Footer ── */
   footer{
-    margin-top:14px;
-    font-size:.9rem;
-    color:var(--muted);
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:16px;
-    flex-wrap:wrap;
+    margin-top:16px;padding-top:12px;border-top:1px solid var(--border);
+    font-size:.85rem;color:var(--muted);
+    display:flex;justify-content:space-between;align-items:center;
+    gap:12px;flex-wrap:wrap;
   }
-  .legend{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    flex-wrap:wrap;
+  footer a{color:var(--cph)}
+  .legend{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .legend-item{display:inline-flex;align-items:center;gap:5px}
+  .swatch{width:10px;height:10px;border-radius:2px;display:inline-block}
+
+  /* ── Modal ── */
+  .modal{
+    position:fixed;left:50%;top:15%;transform:translateX(-50%);
+    width:90%;max-width:500px;z-index:50;
+    box-shadow:0 12px 40px rgba(0,0,0,.15);
   }
-  .legend-item{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-  }
-  .swatch{
-    width:12px;
-    height:12px;
-    border-radius:2px;
-    display:inline-block;
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:40;
   }
   .hidden{display:none}
-  .inline-help{color:var(--muted);font-size:.95rem}
-  .modal{
-    position:fixed;
-    left:50%;
-    top:12%;
-    transform:translateX(-50%);
-    width:88%;
-    max-width:720px;
-    z-index:50;
+
+  /* ── Resume banner ── */
+  .resume-banner{
+    background:#fffbeb;border:1px solid #fde68a;border-radius:8px;
+    padding:14px 18px;margin-bottom:16px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:12px;flex-wrap:wrap;
   }
-  @media (max-width:700px){
-    header{flex-direction:column;align-items:flex-start}
+  .resume-banner p{margin:0;font-size:.92rem;color:#92400e}
+  .resume-banner button{font-size:.85rem;padding:6px 14px}
+
+  /* ── Responsive ── */
+  @media(max-width:700px){
     .controls{justify-content:space-between}
-    .header-left{flex-direction:column;align-items:flex-start}
+    .account-grid{grid-template-columns:1fr}
+    .wrap{padding:16px}
+    .phase-row{flex-direction:column;align-items:flex-start;gap:4px}
+  }
+  @media(max-width:480px){
+    .phase-labels{display:none}
+    .welcome-heading{font-size:1.25rem}
   }
 </style>
 </head>
 <body>
+
 <div class="wrap" role="application" aria-label="Mac Setup Wizard">
-  <header>
-    <div class="header-left">
-      <img class="header-logo" src="./images/branding/counterpart-health-logo.png" alt="Counterpart Health logo" onerror="this.style.display='none'">
-      <div class="header-copy">
-        <h1>Mac Setup Wizard</h1>
-        <div class="small">Follow the steps in order. Estimated time: <strong>1.5–2 hours</strong>.</div>
-      </div>
+  <div id="resumeBanner" class="resume-banner hidden">
+    <p><strong>Welcome back!</strong> You were on <span id="resumeStep"></span>.</p>
+    <div style="display:flex;gap:8px">
+      <button onclick="resumeProgress()">Continue</button>
+      <button onclick="startOver()">Start Over</button>
     </div>
-    <div class="pill" id="stepBadge">Step 1 of 21</div>
+  </div>
+
+  <header>
+    <img class="header-logo" src="./images/branding/counterpart-health-logo.png" alt="Counterpart Health" onerror="this.style.display='none'">
+    <div class="sub">Follow the steps in order. Estimated time: <strong>~90 minutes</strong>.</div>
+    <div class="phase-row">
+      <div class="phase-heading" id="phaseTitle">Phase 1 of 5: Before You Begin</div>
+      <div class="pill" id="stepBadge">Step 1 of 3</div>
+    </div>
   </header>
 
-  <div class="progressbar" aria-hidden="true"><div class="fill" id="progressFill"></div></div>
+  <div class="progress-wrap" id="progressBar"></div>
+  <div class="phase-labels" id="phaseLabels"></div>
 
   <div id="stepArea" class="card"></div>
 
   <div class="controls">
-    <button id="backBtn" onclick="prevStep()" aria-label="Back">&larr; Back</button>
+    <button id="backBtn" onclick="prevStep()">&larr; Back</button>
     <button id="helpBtn" onclick="openHelp()">Help</button>
-    <button id="nextBtn" class="primary" onclick="nextStep()">Next →</button>
+    <button id="nextBtn" class="primary" onclick="nextStep()">Next &rarr;</button>
   </div>
 
   <footer>
-    <div class="small">Live support: Zoom office hours (09:00–13:00 ET) — Email: <a href="mailto:laptopsetup@counterparthealth.com">laptopsetup@counterparthealth.com</a></div>
-    <div class="legend small">
-      <span><strong>Key:</strong></span>
-      <span class="legend-item"><span class="swatch" style="background:var(--cph-blue)"></span><span class="cph">Counterpart Health</span></span>
-      <span class="legend-item"><span class="swatch" style="background:var(--clover-green)"></span><span class="clover">Clover Health</span></span>
+    <div>Live support: <a href="#" style="color:var(--cph);text-decoration:underline">via Zoom</a> (09:00-13:00 ET) &nbsp;|&nbsp; Email: <a href="mailto:laptopsetup@counterparthealth.com">laptopsetup@counterparthealth.com</a></div>
+    <div class="legend" id="footerKey">
+      <span class="legend-item"><span class="swatch" style="background:var(--cph)"></span><span style="color:var(--cph);font-weight:700">Counterpart Health</span></span>
+      <span style="color:#ccc">|</span>
+      <span class="legend-item"><span class="swatch" style="background:var(--clover)"></span><span style="color:var(--clover);font-weight:700">Clover Health</span></span>
     </div>
   </footer>
 </div>
 
+<div id="helpOverlay" class="modal-overlay hidden" onclick="closeHelp()"></div>
 <div id="helpModal" class="card modal hidden" role="dialog" aria-modal="true">
   <div style="display:flex;justify-content:space-between;align-items:center">
     <h3 id="helpTitle" style="margin:0">Help</h3>
-    <button onclick="closeHelp()">Close</button>
+    <button onclick="closeHelp()" style="padding:6px 12px">Close</button>
   </div>
   <div id="helpContent" style="margin-top:12px"></div>
 </div>
 
 <script>
+/* ─────────────────────────────────────
+   IMAGE MAP
+   ───────────────────────────────────── */
 const IMAGES = {
   country: "./images/mac-setup/02-country-region.png",
   setupNew: "./images/mac-setup/03-set-up-as-new.png",
   accessibility: "./images/mac-setup/04-accessibility.png",
   wifi: "./images/mac-setup/05-wifi-network.png",
   enroll: "./images/mac-setup/06-enroll-device-management.png",
+  continueEnroll: "./images/mac-setup/06b-continue-enrolling.png",
   update: "./images/mac-setup/07-macos-update.png",
   enterEmail: "./images/mac-setup/08-enter-cph-email.png",
+  locationServices: "./images/mac-setup/09-enable-location-services.png",
   login: "./images/mac-setup/10-login-screen.png",
-  oktaPhone: "./images/mac-setup/11-okta-verify-phone-prompt.png",
   filevault: "./images/mac-setup/12-filevault-enable-now.png",
   touchid: "./images/mac-setup/13-touch-id.png",
   defaultBrowser: "./images/mac-setup/14-default-browser-chrome.png",
   absorb: "./images/mac-setup/15-absorb-tile.png",
-  chromeProfiles: "./images/mac-setup/16-chrome-profiles.png",
+  chromeSignIn: "./images/mac-setup/16-chrome-sign-in.png",
+  chromeAddAccount: "./images/mac-setup/16-chrome-add-account.png",
+  cloverOkta: "./images/mac-setup/17-clover-okta.png",
   counterpartOkta: "./images/mac-setup/17-counterpart-okta.png",
   zscaler: "./images/mac-setup/18-zscaler-connected.png",
+  oktaVerifyClover: "./images/mac-setup/19a-okta-verify-clover.png",
+  oktaVerifyCloverDone: "./images/mac-setup/19b-okta-verify-clover-done.png",
+  oktaVerifyCph: "./images/mac-setup/19c-okta-verify-cph.png",
+  oktaVerifyBothDone: "./images/mac-setup/19d-okta-verify-both-done.png",
   zoom: "./images/mac-setup/20-zoom-sso.png",
   slack: "./images/mac-setup/21-slack-sign-in.png",
   jamfOtp: "./images/mac-setup/22-jamf-otp-settings.png",
   backupCode: "./images/mac-setup/23-backup-code.png"
 };
 
-function imageOrFallback(src, alt, label){
-  return `<img class="img" src="${src}" alt="${alt}" onerror="this.outerHTML='<div class=&quot;img-fallback&quot;>${label}</div>'"/>`;
+function img(src, alt, fallback){
+  return `<img class="img" src="${src}" alt="${alt}" onerror="this.outerHTML='<div class=\\'img-fallback\\'>${fallback||alt+' screenshot will appear here.'}</div>'"/>`;
 }
 
-const steps = [
-  { id: 'prework', title: 'Getting Started (Pre-work)', render: prework },
-  { id: 'poweron', title: 'Power on your Mac', render: powerOn },
-  { id: 'country', title: 'Select your country', render: selectCountry },
-  { id: 'transfer', title: 'Transfer data — Select "Set up as new"', render: transfer },
-  { id: 'access', title: 'Set Accessibility Preferences (Optional)', render: accessibility },
-  { id: 'wifi', title: 'Select Your Wi-Fi Network', render: wifi },
-  { id: 'enroll', title: 'Enroll with Counterpart Health', render: enroll },
-  { id: 'osupdate', title: 'macOS Update - choose option', render: osUpdate },
-  { id: 'enteremail', title: 'Enter your CPH email', render: enterEmail },
-  { id: 'passwordHelp', title: 'Password help', render: passwordHelp },
-  { id: 'oktaMFA', title: 'MFA — Okta Verify (choose method)', render: oktaMFA },
-  { id: 'filevault', title: 'Enable FileVault', render: filevault },
-  { id: 'touchid', title: 'Touch ID (Optional)', render: touchid },
-  { id: 'chromeDefault', title: 'Set Chrome as default', render: chromeDefault },
-  { id: 'absorb', title: 'Counterpart Health Security Training (Absorb)', render: absorb },
-  { id: 'chromeSignIn', title: 'Sign into Chrome (Clover then CPH)', render: chromeSignIn },
-  { id: 'cphOkta', title: 'Sign into Counterpart Health Okta', render: cphOkta },
-  { id: 'zscaler', title: 'Zscaler (VPN)', render: zscaler },
-  { id: 'zoomSlack', title: 'Zoom & Slack (separate)', render: zoomSlack },
-  { id: 'offlineMFA', title: 'Offline MFA (Jamf OTP)', render: offlineMFA },
-  { id: 'congrats', title: 'Congratulations', render: congrats }
+/* ─────────────────────────────────────
+   PHASES & STEPS
+   ───────────────────────────────────── */
+const phases = [
+  { name: "Before You Begin", steps: [] },
+  { name: "Mac Initial Setup", steps: [] },
+  { name: "Device Security", steps: [] },
+  { name: "Apps & Accounts", steps: [] },
+  { name: "Final Setup", steps: [] }
 ];
 
+const steps = [
+  // ── Phase 1: Before You Begin ──
+  { id:'welcome', phase:0, title:'Welcome to Counterpart Health!', render:renderWelcome, help:'This guide walks you through setting up your new Mac, step by step. You can take breaks whenever you need.' },
+  { id:'prework', phase:0, title:'Getting Started (Pre-work)', render:renderPrework, help:'Complete all pre-work items before powering on your Mac. You need Okta Verify installed on your phone and both Okta accounts activated.' },
+  { id:'twoAccounts', phase:0, title:'Understanding Your Two Accounts', render:renderTwoAccounts, help:'You have two separate accounts: Clover Health and Counterpart Health. Throughout setup, we will tell you which one to use. Look for the color coding.' },
+
+  // ── Phase 2: Mac Initial Setup ──
+  { id:'poweron', phase:1, title:'Power On Your Mac', render:renderPowerOn, help:'Press and hold the power button on your Mac until you see the Apple logo.' },
+  { id:'country', phase:1, title:'Select Your Country', render:renderCountry, help:'Select your country or region and click Continue.' },
+  { id:'transfer', phase:1, title:'Set Up as New', render:renderTransfer, help:'Choose "Set up as new" so the device provisions correctly. Do not transfer data from another Mac.' },
+  { id:'accessibility', phase:1, title:'Accessibility Preferences (Optional)', render:renderAccessibility, help:'Set accessibility preferences if needed, otherwise click Not Now.' },
+  { id:'wifi', phase:1, title:'Connect to Wi-Fi', render:renderWifi, help:'Join a stable Wi-Fi network before continuing.' },
+  { id:'enroll', phase:1, title:'Enroll with Counterpart Health', render:renderEnroll, help:'If an error occurs, click "OK" or "Retry" (it may take a few tries). You may need to go all the way back to the Language/Region screen.' },
+
+  // ── Phase 3: Device Security ──
+  { id:'osupdate', phase:2, title:'Check for macOS Updates', render:renderOsUpdate, help:'If your Mac requires a software update, complete it. After the restart you will return to Select Your Country and continue from there.' },
+  { id:'continueEnroll', phase:2, title:'Continue Enrolling with Counterpart Health', render:renderContinueEnroll, help:'If you do not see "Continue", the computer will automatically continue once complete.' },
+  { id:'locationServices', phase:2, title:'Enable Location Services', render:renderLocationServices, help:'Enable Location Services when prompted.' },
+  { id:'loginCPH', phase:2, title:'Log In with Counterpart Health', render:renderLoginCPH, help:'If you\'ve forgotten your password or have difficulty logging in, contact us ASAP.' },
+  { id:'filevault', phase:2, title:'Enable FileVault', render:renderFileVault, help:'FileVault encrypts your hard drive. Click Enable Now when prompted.' },
+  { id:'touchid', phase:2, title:'Touch ID (Optional)', render:renderTouchID, help:'Touch ID is optional. Set it up if you want to unlock your Mac with your fingerprint.' },
+
+  // ── Phase 4: Apps & Accounts ──
+  { id:'chromeDefault', phase:3, title:'Set Chrome as Default Browser', render:renderChromeDefault, help:'In the top left, click the Apple icon > System Settings > search "Default web browser" > change to Google Chrome.' },
+  { id:'absorb', phase:3, title:'Complete Security Training', render:renderAbsorb, help:'Open Chrome, go to cloverhealth.okta.com, sign in with your Clover Health email, and complete the required Absorb training.' },
+  { id:'cphOkta', phase:3, title:'Sign Into Counterpart Health Okta', render:renderCphOkta, help:'Sign in at counterparthealth.okta.com with your Counterpart Health credentials.' },
+  { id:'chromeSignIn', phase:3, title:'Sign Into Chrome', render:renderChromeSignIn, help:'Sign into Chrome with Clover first, then add a second profile for Counterpart Health.' },
+  { id:'zscaler', phase:3, title:'Connect to Zscaler VPN', render:renderZscaler, help:'Sign into Zscaler with your Clover Health email and confirm it shows connected.' },
+  { id:'oktaVerifyMac', phase:3, title:'Set Up Okta Verify on Your Mac', render:renderOktaVerifyMac, help:'Setting up Okta Verify on your Mac lets you use Touch ID instead of your phone to verify when logging into apps.' },
+  { id:'zoomSlack', phase:3, title:'Set Up Zoom and Slack', render:renderZoomSlack, help:'If prompted for your email and password for Okta, use your Clover Health account for Zoom and your Counterpart Health account for Slack. To find either app, click the magnifying glass in the top right corner and type Zoom or Slack.' },
+
+  // ── Phase 5: Final Setup ──
+  { id:'offlineMFA', phase:4, title:'Set Up Backup Authentication', render:renderOfflineMFA, help:'Jamf OTP gives you a way to verify your identity even when you don\'t have internet access. Save your backup code somewhere safe.' },
+  { id:'congrats', phase:4, title:'You\'re All Set!', render:renderCongrats, help:'Your Mac is fully configured. Head to Foundations onboarding to continue your first day.' },
+];
+
+// Build the phase step index
+steps.forEach((s,i) => { phases[s.phase].steps.push(i); });
+
 let current = 0;
-let state = { updated: false };
+let state = {};
+const STORAGE_KEY = 'cph_wizard_progress';
 
-const helpTexts = {
-  prework: 'Install Okta Verify, activate both Okta accounts, save both passwords, and make sure you have stable Wi-Fi before you start.',
-  poweron: 'Power on your Mac.',
-  country: 'Select your country or region and click Continue.',
-  transfer: 'Choose Set up as new so the device provisions correctly.',
-  access: 'Accessibility is optional. Set it if needed or continue.',
-  wifi: 'Join a stable Wi-Fi network before continuing.',
-  enroll: 'Click Enroll when prompted for device management.',
-  osupdate: 'If the Mac requires an update, complete it. After restart, continue from Transfer data.',
-  enteremail: 'Enter your full Counterpart Health email address.',
-  passwordHelp: 'Use the password you created during Counterpart Health Okta activation.',
-  oktaMFA: 'Approve the push or enter a code from Okta Verify.',
-  filevault: 'Enable FileVault when prompted.',
-  touchid: 'Touch ID is optional.',
-  chromeDefault: 'Set Chrome as the default browser.',
-  absorb: 'Complete the required Absorb training.',
-  chromeSignIn: 'Create your Clover Chrome profile first, then your Counterpart Health profile.',
-  cphOkta: 'Sign in at counterparthealth.okta.com with your Counterpart Health credentials.',
-  zscaler: 'Sign into Zscaler and confirm it shows connected.',
-  zoomSlack: 'Use Clover SSO for Zoom and your Counterpart Health email for Slack.',
-  offlineMFA: 'Set up Jamf OTP and save your backup code.',
-  congrats: 'You are done. Proceed to Foundations onboarding.'
-};
-
+/* ─────────────────────────────────────
+   RENDER ENGINE
+   ───────────────────────────────────── */
 function render(){
-  const area = document.getElementById('stepArea');
-  area.innerHTML = '';
-  if(steps[current].id === 'osupdate' && state.updated) current++;
   const s = steps[current];
-  area.insertAdjacentHTML('beforeend', `<div class="step-title">${s.title}</div>`);
+  const phase = phases[s.phase];
+  const stepsInPhase = phase.steps;
+  const stepInPhase = stepsInPhase.indexOf(current) + 1;
+
+  // Header
+  document.getElementById('phaseTitle').textContent =
+    `Phase ${s.phase+1} of ${phases.length}: ${phase.name}`;
+  document.getElementById('stepBadge').textContent =
+    `Step ${stepInPhase} of ${stepsInPhase.length}`;
+  // Hide step badge on welcome screen
+  document.getElementById('stepBadge').style.display = s.id==='welcome'?'none':'';
+
+  // Progress bar
+  renderProgress(s.phase, stepsInPhase, stepInPhase);
+
+  // Content
+  const area = document.getElementById('stepArea');
+  area.innerHTML = `<div class="step-title">${s.title}</div>`;
   s.render(area);
-  const pct = Math.round((current/(steps.length-1))*100);
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('stepBadge').innerText = `Step ${current+1} of ${steps.length}`;
+
+  // Buttons
   document.getElementById('backBtn').disabled = current === 0;
-  document.getElementById('nextBtn').innerText = current === steps.length-1 ? 'Finish' : 'Next →';
+  const isLast = current === steps.length - 1;
+  document.getElementById('nextBtn').textContent = isLast ? 'Finish' : 'Next \u2192';
+  document.getElementById('nextBtn').style.display = s.id==='congrats'?'none':'';
+  document.getElementById('backBtn').style.display = s.id==='congrats'?'none':'';
+  document.getElementById('helpBtn').style.display = s.id==='congrats'?'none':'';
+
+  // Show key only on pages that reference Clover/CPH accounts
+  const keyPages = ['prework','twoAccounts','loginCPH','absorb','chromeSignIn','cphOkta','zscaler','oktaVerifyMac','zoomSlack','congrats','continueEnroll'];
+  document.getElementById('footerKey').style.display = keyPages.includes(s.id)?'':'none';
+
+  saveProgress();
 }
 
+function renderProgress(activePhase, stepsInPhase, stepInPhase){
+  const bar = document.getElementById('progressBar');
+  const labels = document.getElementById('phaseLabels');
+  bar.innerHTML = '';
+  labels.innerHTML = '';
+  phases.forEach((p,i) => {
+    const seg = document.createElement('div');
+    seg.className = 'progress-seg';
+    const fill = document.createElement('div');
+    fill.className = 'fill';
+    if(i < activePhase) fill.style.width = '100%';
+    else if(i === activePhase) fill.style.width = Math.round((stepInPhase/stepsInPhase.length)*100)+'%';
+    else fill.style.width = '0%';
+    seg.appendChild(fill);
+    bar.appendChild(seg);
+
+    const lbl = document.createElement('div');
+    lbl.className = 'phase-label' + (i===activePhase?' active':'');
+    lbl.textContent = p.name;
+    labels.appendChild(lbl);
+  });
+}
+
+/* ─────────────────────────────────────
+   NAVIGATION
+   ───────────────────────────────────── */
+function nextStep(){
+  const s = steps[current];
+  if(validators[s.id] && !validators[s.id]()) return;
+  if(current < steps.length - 1){ current++; render(); window.scrollTo(0,0); }
+  else { alert('Wizard complete!'); }
+}
+function prevStep(){
+  if(current > 0){ current--; render(); window.scrollTo(0,0); }
+}
+
+/* ─────────────────────────────────────
+   HELP MODAL
+   ───────────────────────────────────── */
 function openHelp(){
-  const id = steps[current].id;
-  document.getElementById('helpTitle').innerText = `Help — ${steps[current].title}`;
-  document.getElementById('helpContent').innerHTML = helpTexts[id] || '';
+  const s = steps[current];
+  document.getElementById('helpTitle').textContent = `Help — ${s.title}`;
+  document.getElementById('helpContent').textContent = s.help || '';
   document.getElementById('helpModal').classList.remove('hidden');
+  document.getElementById('helpOverlay').classList.remove('hidden');
 }
-function closeHelp(){ document.getElementById('helpModal').classList.add('hidden'); }
-
-function prework(container){
-  container.insertAdjacentHTML('beforeend', `
-    <div class="small"><strong>Complete these steps before powering on your Mac.</strong></div>
-    <ul>
-      <li>Download and install <strong>Okta Verify</strong> on your phone.</li>
-      <li>Activate both Okta accounts: <span class="clover">first.last@cloverhealth.com</span> and <span class="cph">first.last@counterparthealth.com</span>.</li>
-      <li>Save both passwords in a secure password manager.</li>
-      <li>Make sure you have a stable Wi-Fi connection.</li>
-    </ul>
-    <label><input id="pre_okta" type="checkbox"> I installed Okta Verify</label>
-    <label><input id="pre_activate" type="checkbox"> I activated both Okta accounts</label>
-    <label><input id="pre_saved" type="checkbox"> I saved both passwords</label>
-  `);
-}
-function powerOn(container){
-  container.insertAdjacentHTML('beforeend', ``);
-}
-function selectCountry(container){
-  container.insertAdjacentHTML('beforeend', `
-    <p>Select your country and click Continue.</p>
-    ${imageOrFallback(IMAGES.country, 'Country selection', 'Country or region screenshot goes here.')}
-  `);
-}
-function transfer(container){
-  container.insertAdjacentHTML('beforeend', `
-    <p><strong>Select "Set up as new"</strong> to proceed.</p>
-    ${imageOrFallback(IMAGES.setupNew, 'Set up as new', 'Set up as new screenshot goes here.')}
-  `);
-}
-function accessibility(container){
-  container.insertAdjacentHTML('beforeend', `
-    <p>Set Accessibility Preferences if needed. Otherwise, select Not Now.</p>
-    ${imageOrFallback(IMAGES.accessibility, 'Accessibility screen', 'Accessibility screenshot goes here.')}
-  `);
-}
-function wifi(container){
-  container.insertAdjacentHTML('beforeend', `
-    <p>Select your Wi-Fi network and enter the password, then click Join.</p>
-    ${imageOrFallback(IMAGES.wifi, 'Wi-Fi screen', 'Wi-Fi screenshot goes here.')}
-  `);
-}
-function enroll(container){
-  container.insertAdjacentHTML('beforeend', `
-    <p>Click <strong>Enroll</strong> to start device management.</p>
-    ${imageOrFallback(IMAGES.enroll, 'Enroll screen', 'Enroll screenshot goes here.')}
-  `);
-}
-function osUpdate(container){
-  container.insertAdjacentHTML('beforeend', `
-    <p>If the Mac prompts for a software update, select the option that matches your case:</p>
-    <label><input name="updateOption" type="radio" value="inprogress"> Update was prompted and is in progress.</label>
-    <label><input name="updateOption" type="radio" value="notprompted"> I was not prompted to update.</label>
-    ${imageOrFallback(IMAGES.update, 'Software update', 'macOS update screenshot goes here.')}
-  `);
-}
-function enterEmail(container){
-  container.insertAdjacentHTML('beforeend', `
-    <p>Enter your Counterpart Health email: <code class="cph">first.last@counterparthealth.com</code>.</p>
-    ${imageOrFallback(IMAGES.enterEmail, 'Enter email screen', 'Enter email screenshot goes here.')}
-  `);
-}
-function passwordHelp(container){
-  container.insertAdjacentHTML('beforeend', `
-    <p>Username: <code>first.last</code><br>Password: the password you created for Counterpart Health during Okta activation.</p>
-    ${imageOrFallback(IMAGES.login, 'Login screen', 'Login screen screenshot goes here.')}
-  `);
-}
-function oktaMFA(container){
-  container.insertAdjacentHTML('beforeend', `
-    <p>Choose either a code from Okta Verify or a push notification approval.</p>
-    ${imageOrFallback(IMAGES.oktaPhone, 'Okta Verify phone prompt', 'Okta Verify phone prompt screenshot goes here.')}
-    <label><input id="method_code" type="checkbox"> I used a code</label>
-    <label><input id="method_push" type="checkbox"> I approved a push</label>
-  `);
-}
-function filevault(container){
-  container.insertAdjacentHTML('beforeend', `
-    <p><strong>Enable FileVault</strong> — click Enable Now, then OK.</p>
-    ${imageOrFallback(IMAGES.filevault, 'FileVault screen', 'FileVault screenshot goes here.')}
-  `);
-}
-function touchid(container){
-  container.insertAdjacentHTML('beforeend', `
-    <p>Set up Touch ID if you want. This is optional.</p>
-    ${imageOrFallback(IMAGES.touchid, 'Touch ID screen', 'Touch ID screenshot goes here.')}
-  `);
-}
-function chromeDefault(container){
-  container.insertAdjacentHTML('beforeend', `
-    <p>Set Chrome as your default browser in System Settings.</p>
-    ${imageOrFallback(IMAGES.defaultBrowser, 'Default browser setting', 'Default browser screenshot goes here.')}
-  `);
-}
-function absorb(container){
-  container.insertAdjacentHTML('beforeend', `
-    <p>Open Chrome, go to <span class="cph">cloverhealth.okta.com</span>, sign in with your <span class="clover">Clover Health</span> email, and complete the required Absorb training.</p>
-    ${imageOrFallback(IMAGES.absorb, 'Absorb tile', 'Absorb screenshot goes here.')}
-  `);
-}
-function chromeSignIn(container){
-  container.insertAdjacentHTML('beforeend', `
-    <ol>
-      <li>Sign in with <span class="clover">first.last@cloverhealth.com</span> first.</li>
-      <li>Add a second Chrome profile for <span class="cph">first.last@counterparthealth.com</span>.</li>
-    </ol>
-    ${imageOrFallback(IMAGES.chromeProfiles, 'Chrome profiles', 'Chrome profiles screenshot goes here.')}
-  `);
-}
-function cphOkta(container){
-  container.insertAdjacentHTML('beforeend', `
-    <p>Sign into <span class="cph">counterparthealth.okta.com</span> using your Counterpart Health credentials.</p>
-    ${imageOrFallback(IMAGES.counterpartOkta, 'Counterpart Okta', 'Counterpart Okta screenshot goes here.')}
-  `);
-}
-function zscaler(container){
-  container.insertAdjacentHTML('beforeend', `
-    <p>Click the blue cloud and sign into Zscaler with your <span class="clover">Clover Health</span> email. Confirm the status shows connected.</p>
-    ${imageOrFallback(IMAGES.zscaler, 'Zscaler connected', 'Zscaler screenshot goes here.')}
-  `);
-}
-function zoomSlack(container){
-  container.insertAdjacentHTML('beforeend', `
-    <p><strong>Zoom:</strong> Sign in with SSO and enter <span class="clover">cloverhealth</span> as the domain.</p>
-    ${imageOrFallback(IMAGES.zoom, 'Zoom SSO', 'Zoom screenshot goes here.')}
-    <p><strong>Slack:</strong> Sign in with your Counterpart Health email and join the Counterpart Health workspace.</p>
-    ${imageOrFallback(IMAGES.slack, 'Slack sign in', 'Slack screenshot goes here.')}
-  `);
-}
-function offlineMFA(container){
-  container.insertAdjacentHTML('beforeend', `
-    <p>Set up Offline MFA (Jamf OTP), then save your backup code.</p>
-    ${imageOrFallback(IMAGES.jamfOtp, 'Jamf OTP settings', 'Jamf OTP screenshot goes here.')}
-    ${imageOrFallback(IMAGES.backupCode, 'Backup code', 'Backup code screenshot goes here.')}
-  `);
-}
-function congrats(container){
-  container.insertAdjacentHTML('beforeend', `
-    <h3>Congratulations!</h3>
-    <p>You have successfully enrolled your laptop.</p>
-  `);
+function closeHelp(){
+  document.getElementById('helpModal').classList.add('hidden');
+  document.getElementById('helpOverlay').classList.add('hidden');
 }
 
+/* ─────────────────────────────────────
+   LOCALSTORAGE
+   ───────────────────────────────────── */
+function saveProgress(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      current, state, ts: Date.now()
+    }));
+  }catch(e){}
+}
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return null;
+    const data = JSON.parse(raw);
+    if(Date.now() - data.ts > 7*24*60*60*1000) return null; // expire after 7 days
+    return data;
+  }catch(e){ return null; }
+}
+function resumeProgress(){
+  const data = loadProgress();
+  if(data){
+    current = Math.min(data.current, steps.length-1);
+    state = data.state || {};
+  }
+  document.getElementById('resumeBanner').classList.add('hidden');
+  render();
+}
+function startOver(){
+  localStorage.removeItem(STORAGE_KEY);
+  current = 0;
+  state = {};
+  document.getElementById('resumeBanner').classList.add('hidden');
+  render();
+}
+
+/* ─────────────────────────────────────
+   VALIDATORS
+   ───────────────────────────────────── */
 const validators = {
-  prework: function(){
+  prework(){
     const ok = document.getElementById('pre_okta')?.checked;
     const act = document.getElementById('pre_activate')?.checked;
     const saved = document.getElementById('pre_saved')?.checked;
-    if(!ok || !act || !saved){ alert('Please confirm all pre-work steps.'); return false; }
+    const wifi = document.getElementById('pre_wifi')?.checked;
+    if(!ok||!act||!saved||!wifi){
+      alert('Please confirm all pre-work items before continuing.');
+      return false;
+    }
     return true;
   },
-  osupdate: function(){
+  osupdate(){
     const chosen = document.querySelector('input[name="updateOption"]:checked');
     if(!chosen){ alert('Please select whether you were prompted to update or not.'); return false; }
-    if(chosen.value === 'inprogress'){ state.updated = true; }
+    if(chosen.value === 'inprogress'){
+      state.osUpdated = true;
+      // Jump back to Country step
+      const countryIdx = steps.findIndex(s=>s.id==='country');
+      if(countryIdx >= 0){
+        alert('After the update completes and your Mac restarts, continue from Select Your Country.');
+        current = countryIdx;
+        render();
+        return false;
+      }
+    }
     return true;
   },
-  oktaMFA: function(){
-    const c = document.getElementById('method_code')?.checked;
-    const p = document.getElementById('method_push')?.checked;
-    if(!c && !p){ alert('Please confirm your MFA method.'); return false; }
+  loginCPH(){
+    const push = document.getElementById('method_push')?.checked;
+    const code = document.getElementById('method_code')?.checked;
+    if(!push && !code){
+      alert('Please confirm which Okta Verify method you used.');
+      return false;
+    }
     return true;
   }
 };
 
-function nextStep(){
-  const id = steps[current].id;
-  if(validators[id] && !validators[id]()) return;
-  if(id === 'osupdate'){
-    const chosen = document.querySelector('input[name="updateOption"]:checked').value;
-    if(chosen === 'inprogress'){
-      alert('After the update completes, continue again from Transfer data.');
-      current = steps.findIndex(s=>s.id==='transfer');
-      render();
-      return;
-    }
-  }
-  if(current < steps.length - 1){ current++; render(); }
-  else { alert('Wizard complete.'); }
-}
-function prevStep(){ if(current > 0){ current--; render(); } }
+/* ─────────────────────────────────────
+   PHASE 1 RENDERERS
+   ───────────────────────────────────── */
+function renderWelcome(container){
+  container.insertAdjacentHTML('beforeend', `
+    <p class="welcome-sub" style="text-align:left;max-width:none;margin:0 0 16px">
+      We're glad you're here. This guide will walk you through setting up your Mac, step by step.
+      Most people finish in about 90 minutes, and you can take breaks whenever you need.
+    </p>
 
-render();
+    <div style="font-weight:700;font-size:.85rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px">
+      Setup Roadmap
+    </div>
+
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-dot">1</div>
+        <div class="roadmap-text">
+          <div class="name">Before You Begin</div>
+          <div class="time">Pre-work you'll do before turning on your Mac (~5 min)</div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-dot">2</div>
+        <div class="roadmap-text">
+          <div class="name">Mac Initial Setup</div>
+          <div class="time">Power on, Wi-Fi, and enrollment (~15 min)</div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-dot">3</div>
+        <div class="roadmap-text">
+          <div class="name">Device Security</div>
+          <div class="time">Updates, login, encryption, and Touch ID (~25 min)</div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-dot">4</div>
+        <div class="roadmap-text">
+          <div class="name">Apps & Accounts</div>
+          <div class="time">Chrome, training, Okta, Zscaler, Zoom, Slack (~30 min)</div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-dot">5</div>
+        <div class="roadmap-text">
+          <div class="name">Final Setup</div>
+          <div class="time">Backup authentication and you're done (~10 min)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-why" style="margin-top:16px">
+      If you get stuck at any point, our team is standing by during office hours. Hit the <strong>Help</strong> button on any step.
+    </div>
+  `);
+}
+
+function renderPrework(container){
+  container.insertAdjacentHTML('beforeend', `
+    <p><strong>Complete these steps before powering on your Mac.</strong></p>
+    <ul style="line-height:2">
+      <li>Download and install <strong>Okta Verify</strong> on your phone.</li>
+      <li>Activate both Okta accounts:
+        <span class="badge badge-clover"><span class="dot"></span> first.last@cloverhealth.com</span> and
+        <span class="badge badge-cph"><span class="dot"></span> first.last@counterparthealth.com</span>
+      </li>
+      <li>Save both passwords in a secure password manager.</li>
+      <li>Make sure you have stable Wi-Fi before starting.</li>
+    </ul>
+
+    <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border)">
+      <label><input id="pre_okta" type="checkbox" onchange="saveProgress()"> I installed Okta Verify on my phone</label>
+      <label><input id="pre_activate" type="checkbox" onchange="saveProgress()"> I activated both Okta accounts</label>
+      <label><input id="pre_saved" type="checkbox" onchange="saveProgress()"> I saved both passwords</label>
+      <label><input id="pre_wifi" type="checkbox" onchange="saveProgress()"> I have stable Wi-Fi</label>
+    </div>
+  `);
+}
+
+function renderTwoAccounts(container){
+  container.insertAdjacentHTML('beforeend', `
+    <p>You have two separate accounts for different systems. Here's when to use each one.</p>
+
+    <div class="account-grid">
+      <div class="account-card cph-card">
+        <h3 style="color:var(--cph)">Counterpart Health</h3>
+        <div class="email">first.last@counterparthealth.com</div>
+        <div style="font-weight:600;font-size:.88rem;margin-bottom:4px">Use for:</div>
+        <ul>
+          <li>Mac login</li>
+          <li>Counterpart Health Okta</li>
+          <li>Slack</li>
+        </ul>
+      </div>
+      <div class="account-card clover-card">
+        <h3 style="color:var(--clover)">Clover Health</h3>
+        <div class="email">first.last@cloverhealth.com</div>
+        <div style="font-weight:600;font-size:.88rem;margin-bottom:4px">Use for:</div>
+        <ul>
+          <li>Chrome sign-in</li>
+          <li>Security training (Absorb)</li>
+          <li>Zscaler VPN</li>
+          <li>Zoom</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-why">
+      <strong>Tip:</strong> Throughout this guide, we'll highlight which account to use.
+      Look for the <span class="badge badge-cph"><span class="dot"></span> blue</span> or
+      <span class="badge badge-clover"><span class="dot"></span> green</span> color coding next to each instruction.
+    </div>
+  `);
+}
+
+/* ─────────────────────────────────────
+   PHASE 2 RENDERERS
+   ───────────────────────────────────── */
+function renderPowerOn(container){
+  container.insertAdjacentHTML('beforeend', `
+    <p>Press the power button (top right corner) to power on your Mac.</p>
+  `);
+}
+
+function renderCountry(container){
+  container.insertAdjacentHTML('beforeend', `
+    <p>Select your country and click Continue.</p>
+    ${img(IMAGES.country, 'Country selection')}
+  `);
+}
+
+function renderTransfer(container){
+  container.insertAdjacentHTML('beforeend', `
+    <p>Select <strong>"Set up as new"</strong> to proceed. Do not transfer data from another Mac.</p>
+    ${img(IMAGES.setupNew, 'Set up as new')}
+  `);
+}
+
+function renderAccessibility(container){
+  container.insertAdjacentHTML('beforeend', `
+    <p>Set accessibility preferences if needed. Otherwise, select <strong>Not Now</strong>.</p>
+    ${img(IMAGES.accessibility, 'Accessibility screen')}
+  `);
+}
+
+function renderWifi(container){
+  container.insertAdjacentHTML('beforeend', `
+    <p>Select your Wi-Fi network, enter the password, and click Join.</p>
+    ${img(IMAGES.wifi, 'Wi-Fi screen')}
+  `);
+}
+
+function renderEnroll(container){
+  container.insertAdjacentHTML('beforeend', `
+    <div class="info-why">
+      <strong>What is this?</strong> Device enrollment lets Counterpart Health push security settings and required apps to your Mac automatically.
+    </div>
+    <p>Click <strong>Enroll</strong> when prompted.</p>
+    ${img(IMAGES.enroll, 'Enroll screen')}
+  `);
+}
+
+/* ─────────────────────────────────────
+   PHASE 3 RENDERERS
+   ───────────────────────────────────── */
+function renderOsUpdate(container){
+  container.insertAdjacentHTML('beforeend', `
+    <p>If your Mac prompts for a software update, select the option that matches your case:</p>
+    <label><input name="updateOption" type="radio" value="inprogress" onchange="saveProgress()"> Update was prompted and is in progress.</label>
+    <label><input name="updateOption" type="radio" value="notprompted" onchange="saveProgress()"> I was not prompted to update.</label>
+    ${img(IMAGES.update, 'Software update')}
+    <div class="info-why" style="margin-top:14px">
+      <strong>Note:</strong> If an update runs, your Mac will restart. After it boots back up, you'll start again from <strong>Select Your Country</strong> and move through setup quickly until you reach this point again.
+    </div>
+  `);
+}
+
+function renderContinueEnroll(container){
+  container.insertAdjacentHTML('beforeend', `
+    <p>Enter your <span class="badge badge-cph"><span class="dot"></span> Counterpart Health email</span> and click <strong>"Save"</strong>. Once downloads are finished, click <strong>Continue</strong>.</p>
+    ${img(IMAGES.continueEnroll, 'Continue enrolling')}
+  `);
+}
+
+function renderLocationServices(container){
+  container.insertAdjacentHTML('beforeend', `
+    <p>Enable Location Services when prompted.</p>
+    ${img(IMAGES.locationServices, 'Location Services')}
+  `);
+}
+
+function renderLoginCPH(container){
+  container.insertAdjacentHTML('beforeend', `
+    <p>Enter your <span class="badge badge-cph"><span class="dot"></span> Counterpart Health</span> credentials:</p>
+    <ul style="line-height:2">
+      <li><strong>Username:</strong> <code>first.last</code></li>
+      <li><strong>Password:</strong> the password you created during Counterpart Health Okta activation.</li>
+    </ul>
+    ${img(IMAGES.login, 'Login screen')}
+    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+      <p><strong>Okta Verify</strong> — Choose one method:</p>
+      <label><input id="method_push" type="checkbox" onchange="saveProgress()"> I approved a push notification</label>
+      <label><input id="method_code" type="checkbox" onchange="saveProgress()"> I entered a code from Okta Verify</label>
+    </div>
+  `);
+}
+
+function renderFileVault(container){
+  container.insertAdjacentHTML('beforeend', `
+    <div class="info-why">
+      <strong>What is this?</strong> FileVault encrypts your hard drive so your data stays safe if your laptop is ever lost or stolen.
+    </div>
+    <p>Click <strong>Enable Now</strong>, then click <strong>OK</strong>.</p>
+    ${img(IMAGES.filevault, 'FileVault screen')}
+  `);
+}
+
+function renderTouchID(container){
+  container.insertAdjacentHTML('beforeend', `
+    <p>Set up Touch ID if you'd like to unlock your Mac with your fingerprint. This is optional.</p>
+    ${img(IMAGES.touchid, 'Touch ID screen')}
+  `);
+}
+
+/* ─────────────────────────────────────
+   PHASE 4 RENDERERS
+   ───────────────────────────────────── */
+function renderChromeDefault(container){
+  container.insertAdjacentHTML('beforeend', `
+    <p>In the top left, click the <strong>Apple icon</strong> &gt; <strong>System Settings</strong> &gt; search <strong>"Default web browser"</strong> &gt; change to <strong>Google Chrome</strong>.</p>
+    ${img(IMAGES.defaultBrowser, 'Default browser setting')}
+  `);
+}
+
+function renderAbsorb(container){
+  container.insertAdjacentHTML('beforeend', `
+    <p>Open Chrome. <strong>Don't sign into Chrome yet</strong> — go directly to
+      <span class="badge badge-clover"><span class="dot"></span> cloverhealth.okta.com</span>,
+      sign in with your <span class="badge badge-clover"><span class="dot"></span> Clover Health</span> email,
+      and complete the required Absorb training.</p>
+    <p style="font-size:.9rem;color:var(--muted)">Look for the <strong>Absorb</strong> tile (circled below).</p>
+    <div style="position:relative;display:inline-block">
+      ${img(IMAGES.absorb, 'Absorb tile')}
+    </div>
+  `);
+}
+
+function renderChromeSignIn(container){
+  container.insertAdjacentHTML('beforeend', `
+    <ol style="line-height:2">
+      <li>Sign into Chrome with <span class="badge badge-clover"><span class="dot"></span> first.last@cloverhealth.com</span> first.</li>
+      <li>Then click <strong>Add Account</strong> to add a second Chrome profile for <span class="badge badge-cph"><span class="dot"></span> first.last@counterparthealth.com</span>.</li>
+    </ol>
+    ${img(IMAGES.chromeSignIn, 'Chrome sign in')}
+    ${img(IMAGES.chromeAddAccount, 'Chrome add account')}
+  `);
+}
+
+function renderCphOkta(container){
+  container.insertAdjacentHTML('beforeend', `
+    <p>Sign into <span class="badge badge-cph"><span class="dot"></span> counterparthealth.okta.com</span>
+      using your Counterpart Health credentials.</p>
+    ${img(IMAGES.counterpartOkta, 'Counterpart Okta')}
+  `);
+}
+
+function renderZscaler(container){
+  container.insertAdjacentHTML('beforeend', `
+    <div class="info-why">
+      <strong>What is this?</strong> Zscaler is a VPN that secures your internet connection when working remotely.
+    </div>
+    <p>Click the blue cloud icon and sign in with your
+      <span class="badge badge-clover"><span class="dot"></span> Clover Health</span> email.
+      Confirm the status shows <strong>connected</strong>.</p>
+    ${img(IMAGES.zscaler, 'Zscaler connected')}
+  `);
+}
+
+function renderOktaVerifyMac(container){
+  container.insertAdjacentHTML('beforeend', `
+    <div class="info-why">
+      <strong>What is this?</strong> Setting up Okta Verify on your Mac lets you use Touch ID instead of pulling out your phone every time you need to verify your identity.
+    </div>
+    <ol style="line-height:2.2">
+      <li>Open <strong>Spotlight Search</strong> — click the magnifying glass icon in the top-right corner of your screen (or press <strong>Cmd + Space</strong>).</li>
+      <li>Type <strong>"Okta Verify"</strong> and open the app.</li>
+      <li>Click <strong>Get Started</strong>.</li>
+      <li>Type <span class="badge badge-clover"><span class="dot"></span> cloverhealth.okta.com</span> and click <strong>Next</strong>.</li>
+      <li>Select <strong>Password</strong>, then select <strong>Okta Verify push</strong>.</li>
+    </ol>
+    ${img(IMAGES.oktaVerifyClover, 'Okta Verify - Clover setup')}
+    ${img(IMAGES.oktaVerifyCloverDone, 'Okta Verify - Clover added')}
+    <ol start="6" style="line-height:2.2;margin-top:14px">
+      <li>Select <strong>Enable</strong>, then select <strong>Use another account</strong>.</li>
+      <li>Type <span class="badge badge-cph"><span class="dot"></span> counterparthealth.okta.com</span> and click <strong>Next</strong>.</li>
+      <li>Select <strong>Password</strong>, then select <strong>Okta Verify push</strong>.</li>
+    </ol>
+    ${img(IMAGES.oktaVerifyCph, 'Okta Verify - CPH setup')}
+    <ol start="9" style="line-height:2.2;margin-top:14px">
+      <li>Confirm both <span class="badge badge-clover"><span class="dot"></span> Clover</span> and <span class="badge badge-cph"><span class="dot"></span> Counterpart</span> accounts are added.</li>
+    </ol>
+    ${img(IMAGES.oktaVerifyBothDone, 'Okta Verify - both accounts added')}
+  `);
+}
+
+function renderZoomSlack(container){
+  container.insertAdjacentHTML('beforeend', `
+    <p><strong>Zoom:</strong> Find and open Zoom. Click on <strong>SSO</strong>. The domain is <span class="badge badge-clover"><span class="dot"></span> cloverhealth</span>.</p>
+    ${img(IMAGES.zoom, 'Zoom SSO')}
+    <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+      <p><strong>Slack:</strong> Sign in with your <span class="badge badge-cph"><span class="dot"></span> Counterpart Health</span> email. A confirmation code will be sent to your Counterpart email. Join the <strong>Counterpart Health workspace</strong>.</p>
+      ${img(IMAGES.slack, 'Slack sign in')}
+    </div>
+    <div class="info-why" style="margin-top:14px">
+      <strong>Tip:</strong> To find either app, click the magnifying glass in the top right corner of your screen and type <strong>Zoom</strong> or <strong>Slack</strong>.
+    </div>
+  `);
+}
+
+/* ─────────────────────────────────────
+   PHASE 5 RENDERERS
+   ───────────────────────────────────── */
+function renderOfflineMFA(container){
+  container.insertAdjacentHTML('beforeend', `
+    <div class="info-why">
+      <strong>What is this?</strong> Jamf OTP gives you a way to verify your identity even without internet access, like on a plane or if your Wi-Fi goes down.
+    </div>
+    <ol style="line-height:2.2">
+      <li>In the top right corner of your screen, click the <strong>x</strong> icon and select <strong>OTP Settings</strong>.</li>
+      <li>On your mobile device, go to <strong>Okta Verify</strong> &gt; <strong>+</strong> &gt; <strong>Organization</strong> &gt; <strong>Add Account from Another Device</strong> &gt; <strong>Scan QR Code</strong>.</li>
+      <li>Scan the QR code shown on your Mac screen.</li>
+      <li>On your computer, enter the 6-digit Jamf code provided by Okta Verify and click <strong>Submit</strong>.</li>
+      <li>Screenshot (<strong>Cmd + Shift + 3</strong>) or save the backup code in a safe location.</li>
+    </ol>
+    ${img(IMAGES.jamfOtp, 'Jamf OTP settings')}
+    ${img(IMAGES.backupCode, 'Backup code')}
+  `);
+}
+
+function renderCongrats(container){
+  container.innerHTML = ''; // clear the step-title, we'll do our own
+  container.insertAdjacentHTML('beforeend', `
+    <div style="text-align:center;padding:20px 0 10px">
+      <div style="width:56px;height:56px;border-radius:50%;background:#10b981;margin:0 auto 16px;display:flex;align-items:center;justify-content:center">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2 style="margin:0 0 6px;font-size:1.5rem;color:var(--text)">You're All Set!</h2>
+      <p style="color:var(--muted);margin:0">Your Mac is fully configured and secured. Great work.</p>
+    </div>
+
+    <div style="margin:24px 0;padding:16px;background:#f8fafc;border-radius:8px">
+      <div style="font-weight:700;font-size:.88rem;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);margin-bottom:12px">Quick Reference</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="badge badge-cph"><span class="dot"></span></span>
+          <div><strong>Counterpart Health Okta</strong><br><span style="color:var(--muted);font-size:.88rem">counterparthealth.okta.com</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="badge badge-clover"><span class="dot"></span></span>
+          <div><strong>Clover Health Okta</strong><br><span style="color:var(--muted);font-size:.88rem">cloverhealth.okta.com</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="badge badge-clover"><span class="dot"></span></span>
+          <div><strong>Zoom</strong><br><span style="color:var(--muted);font-size:.88rem">SSO domain: cloverhealth</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="badge badge-cph"><span class="dot"></span></span>
+          <div><strong>Slack</strong><br><span style="color:var(--muted);font-size:.88rem">Counterpart Health workspace</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="font-size:1.1rem">&#9993;</span>
+          <div><strong>IT Support</strong><br><span style="color:var(--muted);font-size:.88rem">laptopsetup@counterparthealth.com</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px">
+      <div style="font-weight:700;margin-bottom:8px">What's Next?</div>
+      <ul style="color:var(--muted);line-height:2;margin:0;padding-left:18px">
+        <li>Check your <span class="badge badge-clover"><span class="dot"></span> Clover Health</span> calendar to see what events are scheduled.</li>
+        <li>If you're joining on an onboarding week, you'll start with <strong>Foundations Onboarding</strong> — these invites are on your Clover Health calendar.</li>
+        <li>If you have time before your first meeting, get a start on your required compliance trainings in <strong>Absorb</strong>.</li>
+      </ul>
+    </div>
+  `);
+}
+
+/* ─────────────────────────────────────
+   INIT
+   ───────────────────────────────────── */
+(function init(){
+  const saved = loadProgress();
+  if(saved && saved.current > 0){
+    state = saved.state || {};
+    const targetStep = Math.min(saved.current, steps.length-1);
+    const s = steps[targetStep];
+    const phase = phases[s.phase];
+    const stepInPhase = phase.steps.indexOf(targetStep)+1;
+    document.getElementById('resumeStep').textContent =
+      `Phase ${s.phase+1}: ${phase.name}, Step ${stepInPhase}`;
+    document.getElementById('resumeBanner').classList.remove('hidden');
+  }
+  render();
+})();
 </script>
 </body>
 </html>
