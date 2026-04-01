@@ -65,6 +65,7 @@
   .card{
     border-radius:10px;padding:20px;margin:8px 0;
     border:1px solid var(--border);background:var(--card);
+    transition:opacity .15s ease;
   }
   .step-title{
     font-weight:700;color:var(--cph);margin-bottom:10px;font-size:1.2rem;
@@ -148,12 +149,16 @@
   button{
     padding:10px 18px;border-radius:8px;border:1px solid #d0d7e6;
     background:#fff;cursor:pointer;font-size:.92rem;font-weight:600;
-    transition:all .15s;
+    transition:all .15s;min-height:44px;
   }
   button:hover{background:#f5f7fa}
+  button:focus-visible{outline:2px solid var(--cph);outline-offset:2px}
   button.primary{background:var(--cph);color:#fff;border-color:var(--cph)}
   button.primary:hover{background:#3a3fc2}
   button:disabled{opacity:.45;cursor:not-allowed}
+  input[type="checkbox"]:focus-visible,
+  input[type="radio"]:focus-visible{outline:2px solid var(--cph);outline-offset:2px}
+  a:focus-visible{outline:2px solid var(--cph);outline-offset:2px}
   label{display:block;margin:8px 0;font-size:.94rem;cursor:pointer}
   label input[type="checkbox"],
   label input[type="radio"]{margin-right:8px;cursor:pointer}
@@ -236,7 +241,7 @@
   </div>
 
   <footer>
-    <div>Live support: <a href="#" style="color:var(--cph);text-decoration:underline">via Zoom</a> (09:00-13:00 ET) &nbsp;|&nbsp; Email: <a href="mailto:laptopsetup@counterparthealth.com">laptopsetup@counterparthealth.com</a></div>
+    <div>Live support: <a href="#" style="color:var(--cph);text-decoration:underline">via Zoom</a> <span style="color:#aaa;font-size:.8rem">[placeholder]</span> (09:00-13:00 ET) &nbsp;|&nbsp; Email: <a href="mailto:laptopsetup@counterparthealth.com">laptopsetup@counterparthealth.com</a></div>
     <div class="legend" id="footerKey">
       <span class="legend-item"><span class="swatch" style="background:var(--cph)"></span><span style="color:var(--cph);font-weight:700">Counterpart Health</span></span>
       <span style="color:#ccc">|</span>
@@ -321,7 +326,7 @@ const steps = [
   { id:'osupdate', phase:2, title:'Check for macOS Updates', render:renderOsUpdate, help:'If your Mac requires a software update, complete it. After the restart you will return to Select Your Country and continue from there.' },
   { id:'continueEnroll', phase:2, title:'Continue Enrolling with Counterpart Health', render:renderContinueEnroll, help:'If you do not see "Continue", the computer will automatically continue once complete.' },
   { id:'locationServices', phase:2, title:'Enable Location Services', render:renderLocationServices, help:'Enable Location Services when prompted.' },
-  { id:'loginCPH', phase:2, title:'Log In with Counterpart Health', render:renderLoginCPH, help:'If you\'ve forgotten your password or have difficulty logging in, contact us ASAP.' },
+  { id:'loginCPH', phase:2, title:'Log In with Counterpart Health', render:renderLoginCPH, help:'If you\'ve forgotten your password or have difficulty logging in, email laptopsetup@counterparthealth.com or join our Zoom office hours (09:00-13:00 ET) ASAP.' },
   { id:'filevault', phase:2, title:'Enable FileVault', render:renderFileVault, help:'FileVault encrypts your hard drive. Click Enable Now when prompted.' },
   { id:'touchid', phase:2, title:'Touch ID (Optional)', render:renderTouchID, help:'Touch ID is optional. Set it up if you want to unlock your Mac with your fingerprint.' },
 
@@ -366,10 +371,14 @@ function render(){
   // Progress bar
   renderProgress(s.phase, stepsInPhase, stepInPhase);
 
-  // Content
+  // Content (with fade transition)
   const area = document.getElementById('stepArea');
-  area.innerHTML = `<div class="step-title">${s.title}</div>`;
-  s.render(area);
+  area.style.opacity = '0';
+  setTimeout(() => {
+    area.innerHTML = `<div class="step-title">${s.title}</div>`;
+    s.render(area);
+    area.style.opacity = '1';
+  }, 80);
 
   // Buttons
   document.getElementById('backBtn').disabled = current === 0;
