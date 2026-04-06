@@ -366,10 +366,10 @@ function render(){
   document.getElementById('backBtn').disabled = current === 0;
   const isLast = current === steps.length - 1;
   document.getElementById('nextBtn').textContent = isLast ? 'Finish' : 'Next \u2192';
-  document.getElementById('nextBtn').style.display = s.id==='congrats'?'none':'';
-  document.getElementById('backBtn').style.display = s.id==='congrats'?'none':'';
-  document.getElementById('helpBtn').style.display = s.id==='congrats'?'none':'';
-
+  document.getElementById('nextBtn').style.display = s.id === 'congrats' ? 'none' : '';
+  document.getElementById('backBtn').style.display = '';
+  document.getElementById('helpBtn').style.display = s.id === 'congrats' ? 'none' : '';
+  
   // Show key only on pages that reference Clover/CPH accounts
   const keyPages = ['prework','twoAccounts','loginCPH','absorb','chromeSignIn','cphOkta','zscaler','oktaVerifyMac','zoomSlack','congrats','continueEnroll'];
   document.getElementById('footerKey').style.display = keyPages.includes(s.id)?'':'none';
