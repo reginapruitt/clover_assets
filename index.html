@@ -310,7 +310,7 @@ const steps = [
   { id:'locationServices', phase:2, title:'Enable Location Services', render:renderLocationServices, help:'Enable Location Services when prompted.' },
   { id:'loginCPH', phase:2, title:'Log In with Counterpart Health', render:renderLoginCPH, help:'If you\'ve forgotten your password or have difficulty logging in, email laptopsetup@counterparthealth.com or join our Zoom office hours (09:00-13:00 ET) ASAP.' },
   { id:'filevault', phase:2, title:'Enable FileVault', render:renderFileVault, help:'FileVault encrypts your hard drive. Click Enable Now when prompted.' },
-  { id:'touchid', phase:2, title:'Touch ID (Optional)', render:renderTouchID, help:'Touch ID is optional. Set it up if you want to unlock your Mac with your fingerprint.' },
+  {    id:'touchid',    phase:2,    title:'Set Up Touch ID',    render:renderTouchID,    help:'Touch ID is strongly recommended. You can finish setup without it, but setting it up now makes sign-ins and identity verification much easier.'  },
 
   // ── Phase 4: Apps & Accounts ──
   { id:'chromeDefault', phase:3, title:'Set Chrome as Default Browser', render:renderChromeDefault, help:'In the top left, click the Apple icon > System Settings > search "Default web browser" > change to Google Chrome.' },
@@ -718,7 +718,7 @@ function renderFileVault(container){
 
 function renderTouchID(container){
   container.insertAdjacentHTML('beforeend', `
-    <p>Set up Touch ID if you'd like to unlock your Mac with your fingerprint. This is optional.</p>
+    <p><strong>We strongly recommend setting up Touch ID now.</strong> You can do this later, but completing it during setup makes sign-ins and identity verification much easier.</p>
     ${img(IMAGES.touchid, 'Touch ID screen')}
   `);
 }
